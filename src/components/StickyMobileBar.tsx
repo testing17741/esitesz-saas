@@ -36,8 +36,8 @@ export function StickyMobileBar({ phone, whatsapp, whatsappMessage }: StickyMobi
           Call Now
         </a>
       </div>
-      <p className="text-center text-[9px] text-slate-400 mt-1 font-medium">
-        ⚡ Instant WhatsApp &amp; Direct Phone Support • Powered by esitesz
+      <p className="text-center text-[9px] text-slate-500 mt-1 font-medium">
+        Instant WhatsApp &amp; Direct Phone Support • Developed by esitesz
       </p>
     </div>
   );

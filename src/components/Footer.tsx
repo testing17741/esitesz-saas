@@ -19,18 +19,33 @@ export function Footer() {
             </p>
             <div className="pt-2">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-[11px] font-medium text-slate-300">
-                🚀 Developed by <span className="text-blue-400 font-semibold">esitesz</span>
+                Developed by <span className="text-blue-400 font-semibold">esitesz</span>
               </span>
             </div>
           </div>
 
           {/* Platform Links */}
           <div className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Platform</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Platform Pages</h4>
             <ul className="text-xs space-y-1.5">
               <li>
-                <Link href="/" className="hover:text-white transition">
-                  Product Overview
+                <Link href="/about" className="hover:text-white transition">
+                  About esitesz
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="hover:text-white transition">
+                  SaaS Services
+                </Link>
+              </li>
+              <li>
+                <Link href="/domains" className="hover:text-white transition">
+                  Custom Domains &amp; Subdomains
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-white transition">
+                  Contact Support
                 </Link>
               </li>
               <li>
@@ -38,22 +53,12 @@ export function Footer() {
                   Email OTP Sign In
                 </Link>
               </li>
-              <li>
-                <Link href="/dashboard/new" className="hover:text-white transition">
-                  Create Business Page
-                </Link>
-              </li>
-              <li>
-                <Link href="/#sample-preview" className="hover:text-white transition">
-                  Reference Blueprint
-                </Link>
-              </li>
             </ul>
           </div>
 
           {/* Compliance & Legal */}
           <div className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Legal & Compliance</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Legal &amp; Compliance</h4>
             <ul className="text-xs space-y-1.5">
               <li>
                 <Link href="/privacy" className="hover:text-white transition">
@@ -67,7 +72,7 @@ export function Footer() {
               </li>
               <li>
                 <a href="mailto:support@esitesz.com" className="hover:text-white transition">
-                  Contact Support
+                  Grievance Redressal
                 </a>
               </li>
             </ul>

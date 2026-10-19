@@ -54,6 +54,11 @@ model Business {
   description     String?
   category        String   @default("General Business")
   
+  // Custom Domain & Subdomain integration
+  customDomain    String?  @unique
+  subdomain       String?  @unique
+  domainStatus    String   @default("UNCONNECTED") // "UNCONNECTED" | "PENDING" | "CONNECTED"
+  
   // Contact & Social
   phone           String
   whatsapp        String
@@ -67,7 +72,6 @@ model Business {
   
   // Status & Super Admin Moderation
   // "sab approve rahega lekin mai reject bhi kar sakta hu"
-  // "APPROVED" | "PENDING" | "REJECTED" | "SUSPENDED"
   status          String   @default("APPROVED")
   rejectionReason String?
   
@@ -167,4 +171,19 @@ model BusinessLead {
 
   @@index([businessId])
   @@index([createdAt])
+}
+
+model DomainRequest {
+  id          String   @id @default(cuid())
+  businessId  String?
+  email       String
+  phone       String
+  domainType  String   // "CUSTOM_DOMAIN" | "SUBDOMAIN"
+  domainName  String   // e.g. "sharmaelectricals.in" or "sharma.esitesz.com"
+  status      String   @default("PENDING") // "PENDING" | "APPROVED" | "REJECTED"
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  @@index([email])
+  @@index([status])
 }

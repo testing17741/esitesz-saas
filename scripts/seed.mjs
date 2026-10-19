@@ -20,7 +20,18 @@ async function main() {
     },
   });
 
-  console.log(`Created/Verified Super Admin: ${adminUser.email}`);
+  // Also pre-authorize testing17741@gmail.com as Super Admin
+  const ownerUser = await prisma.user.upsert({
+    where: { email: 'testing17741@gmail.com' },
+    update: { role: 'SUPER_ADMIN' },
+    create: {
+      email: 'testing17741@gmail.com',
+      name: 'Esitesz Owner',
+      role: 'SUPER_ADMIN',
+    },
+  });
+
+  console.log(`Created/Verified Super Admins: ${adminUser.email}, ${ownerUser.email}`);
 
   // Create standard sample business matching samplebyesitesz reference
   const sampleBiz = await prisma.business.upsert({

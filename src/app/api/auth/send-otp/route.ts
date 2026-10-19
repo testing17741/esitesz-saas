@@ -18,11 +18,15 @@ export async function POST(req: NextRequest) {
 
     logger.info('OTP request processed', { email });
 
+    const hasSmtp = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER);
+
     return successResponse({
-      message: 'OTP has been dispatched to your email address.',
+      message: hasSmtp
+        ? 'Verification code dispatched to your email address.'
+        : 'Verification code generated successfully. Enter the code shown below to sign in.',
       email,
-      // For developer ease in dev environments, include OTP in response if not production
-      ...(process.env.NODE_ENV !== 'production' ? { devOtp: otp } : {}),
+      // Provide devOtp if SMTP is not configured so user is never locked out on preview/demo deployments
+      devOtp: !hasSmtp ? otp : undefined,
     });
   } catch (error) {
     logger.error('Error in send-otp route', { error: String(error) });

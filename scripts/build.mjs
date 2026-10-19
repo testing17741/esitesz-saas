@@ -12,7 +12,7 @@ if (!process.env.JWT_SECRET) {
   console.log('[esitesz build] Defaulting JWT_SECRET for build step.');
 }
 if (!process.env.SUPER_ADMIN_EMAILS) {
-  process.env.SUPER_ADMIN_EMAILS = 'admin@esitesz.com,super@esitesz.com';
+  process.env.SUPER_ADMIN_EMAILS = 'admin@esitesz.com,super@esitesz.com,testing17741@gmail.com';
 }
 if (!process.env.NEXT_PUBLIC_APP_URL) {
   process.env.NEXT_PUBLIC_APP_URL = process.env.VERCEL_URL

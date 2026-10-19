@@ -152,7 +152,7 @@ export default function LoginPage() {
                 />
               </div>
               <p className="text-[11px] text-slate-500">
-                To test Super Admin mode, use <code className="text-blue-700 bg-slate-100 px-1 py-0.5 rounded">admin@esitesz.com</code>.
+                Sign in with any email. Master Super Admin access is pre-assigned to <code className="text-blue-700 bg-slate-100 px-1 py-0.5 rounded font-mono">testing17741@gmail.com</code> and <code className="text-blue-700 bg-slate-100 px-1 py-0.5 rounded font-mono">admin@esitesz.com</code>.
               </p>
             </div>
 

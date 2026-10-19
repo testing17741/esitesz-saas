@@ -12,7 +12,8 @@ import {
   Zap,
   Globe,
   CheckCircle2,
-  Layers,
+  Smartphone,
+  Server,
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -29,6 +30,16 @@ export default async function HomePage() {
     phone: string;
     headline: string | null;
     _count: { services: number; leads: number };
+  }> = [];
+
+  let latestLeads: Array<{
+    id: string;
+    name: string;
+    phone: string;
+    requirement: string;
+    status: string;
+    createdAt: Date;
+    business: { name: string; slug: string };
   }> = [];
 
   try {
@@ -50,8 +61,24 @@ export default async function HomePage() {
       take: 6,
       orderBy: { createdAt: 'desc' },
     });
+
+    latestLeads = await prisma.businessLead.findMany({
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        requirement: true,
+        status: true,
+        createdAt: true,
+        business: {
+          select: { name: true, slug: true },
+        },
+      },
+      take: 4,
+      orderBy: { createdAt: 'desc' },
+    });
   } catch (e) {
-    console.error('Error fetching businesses for homepage', e);
+    console.error('Error fetching data for homepage', e);
   }
 
   return (
@@ -59,7 +86,7 @@ export default async function HomePage() {
       {/* Hero Section */}
       <section className="relative pt-12 md:pt-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center space-y-6">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm">
-          <Sparkles className="w-3.5 h-3.5" />
+          <Sparkles className="w-3.5 h-3.5 text-blue-600" />
           <span>The Next-Generation Local Business Engine</span>
           <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
           <span className="font-bold text-slate-900">Developed by esitesz</span>
@@ -86,11 +113,19 @@ export default async function HomePage() {
             <ArrowRight className="w-4 h-4" />
           </Link>
           <a
-            href="#sample-preview"
+            href="#sync"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm border border-slate-300 shadow-sm transition"
           >
-            Explore Blueprint Preview
+            <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+            View Inquiry Sheet Sync
           </a>
+          <Link
+            href="/domains"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm border border-slate-300 shadow-sm transition"
+          >
+            <Server className="w-4 h-4 text-blue-600" />
+            Connect Custom Domain
+          </Link>
         </div>
 
         <div className="pt-6 flex items-center justify-center gap-6 text-xs text-slate-500 flex-wrap">
@@ -104,7 +139,7 @@ export default async function HomePage() {
             <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Google Maps &amp; AEO Schema
           </span>
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Super Admin Moderation
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Super Admin Quality Moderation
           </span>
         </div>
       </section>
@@ -120,7 +155,7 @@ export default async function HomePage() {
               <span className="w-3 h-3 rounded-full bg-green-500 inline-block" />
               <span className="ml-2 opacity-80 text-[11px]">samplebyesitesz.esitesz.com — Architecture Showcase</span>
             </div>
-            <span className="text-emerald-400 font-bold uppercase text-[10px]">Active Architecture</span>
+            <span className="text-emerald-400 font-bold uppercase text-[10px]">Active Blueprint</span>
           </div>
 
           <div className="p-6 md:p-10 space-y-8 bg-slate-50/50">
@@ -210,13 +245,17 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* The Magic Section Preview (Form to Sheet) */}
-            <div className="bg-slate-900 text-white rounded-2xl p-6 md:p-8 space-y-6">
+            {/* The Magic Section Preview: Form to Sheet with id="sync" */}
+            <div id="sync" className="bg-slate-900 text-white rounded-2xl p-6 md:p-8 space-y-6 scroll-mt-24">
               <div className="text-center space-y-1">
-                <span className="text-[10px] font-mono text-green-400 uppercase font-bold tracking-wider">
-                  The &quot;Magic&quot; Section: Form to Sheet
-                </span>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/70 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono uppercase font-bold tracking-wider">
+                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                  The Automated Inquiry System (Form to Sheet)
+                </div>
                 <h4 className="text-lg md:text-xl font-bold">Instant Inquiry Data Sync</h4>
+                <p className="text-xs text-slate-400 max-w-lg mx-auto">
+                  When a customer fills the form on your website, it writes directly into your database sheet and syncs to your phone.
+                </p>
               </div>
 
               <div className="flex flex-col md:flex-row items-center justify-center gap-6">
@@ -241,36 +280,70 @@ export default async function HomePage() {
                   </span>
                 </div>
 
+                {/* Actual Leads Sheet Representation */}
                 <div className="bg-white text-slate-900 rounded-xl p-4 w-full max-w-xs space-y-2 text-xs shadow-lg">
-                  <span className="inline-block px-2 py-0.5 rounded bg-green-100 text-green-800 font-bold text-[10px]">
-                    On Your Phone / Dashboard
-                  </span>
-                  <div className="bg-green-50 rounded p-2 border border-green-200 font-mono text-[10px] space-y-1">
-                    <div className="flex items-center gap-1 font-bold text-emerald-800 border-b border-green-200 pb-1">
-                      <FileSpreadsheet className="w-3.5 h-3.5" /> Leads_Sheet.xlsx
+                  <div className="flex items-center justify-between">
+                    <span className="inline-block px-2 py-0.5 rounded bg-green-100 text-green-800 font-bold text-[10px]">
+                      On Your Phone / Dashboard
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-mono">Live Sync</span>
+                  </div>
+
+                  <div className="bg-green-50 rounded p-2.5 border border-green-200 font-mono text-[10px] space-y-1.5">
+                    <div className="flex items-center justify-between pb-1.5 border-b border-green-200">
+                      <div className="flex items-center gap-1 font-bold text-emerald-800">
+                        <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" /> Leads_Sheet.xlsx
+                      </div>
+                      <span className="text-[9px] font-sans text-emerald-700 font-semibold">Realtime</span>
                     </div>
-                    <div className="grid grid-cols-3 font-bold text-slate-700 pt-1">
-                      <span>Name</span>
+
+                    <div className="grid grid-cols-3 font-bold text-slate-700 pt-0.5 text-[9px] uppercase tracking-wider">
+                      <span>Customer</span>
                       <span>Phone</span>
-                      <span>Status</span>
+                      <span className="text-right">Project</span>
                     </div>
-                    <div className="grid grid-cols-3 text-slate-600 bg-white p-1 rounded border">
-                      <span>Rohan K.</span>
-                      <span>9812...</span>
-                      <span className="text-emerald-700 font-bold">New</span>
-                    </div>
+
+                    {latestLeads.length > 0 ? (
+                      latestLeads.map((lead) => (
+                        <div key={lead.id} className="grid grid-cols-3 items-center text-[10px] bg-white p-1.5 rounded border border-emerald-100 text-slate-700">
+                          <span className="font-semibold truncate">{lead.name}</span>
+                          <span className="text-slate-500 truncate">{lead.phone.slice(0, 8)}..</span>
+                          <Link
+                            href={`/biz/${lead.business.slug}`}
+                            className="text-right text-blue-600 hover:underline truncate font-medium text-[9px]"
+                            title={`View project: ${lead.business.name}`}
+                          >
+                            {lead.business.slug}
+                          </Link>
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        <div className="grid grid-cols-3 text-slate-600 bg-white p-1 rounded border">
+                          <span>Rohan K.</span>
+                          <span>9812...</span>
+                          <span className="text-emerald-700 font-bold text-right">samplebyesitesz</span>
+                        </div>
+                        <div className="grid grid-cols-3 text-slate-600 bg-white p-1 rounded border">
+                          <span>Amit S.</span>
+                          <span>8800...</span>
+                          <span className="text-emerald-700 font-bold text-right">samplebyesitesz</span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Mobile Fixed Bar Highlight */}
+            {/* Mobile Action Bar Highlight without AI emoji */}
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center space-y-1">
-              <span className="text-xs font-bold text-blue-900">
-                📱 Fixed Sticky Bottom Bar Included On Mobile
-              </span>
+              <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-blue-900">
+                <Smartphone className="w-4 h-4 text-blue-700" />
+                <span>Fixed Sticky Bottom Action Bar Included on Smartphones</span>
+              </div>
               <p className="text-[11px] text-blue-700">
-                Floating WhatsApp and Call buttons remain docked on customers&apos; smartphone screens, lifting conversions by up to 340%.
+                Docked WhatsApp and Call buttons remain permanently accessible on customer mobile viewports for maximum lead conversion.
               </p>
             </div>
           </div>

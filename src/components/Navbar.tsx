@@ -60,15 +60,24 @@ export function Navbar() {
               </div>
             </Link>
 
-            <div className="hidden md:flex items-center gap-5 text-sm font-medium text-slate-600 dark:text-slate-300">
+            <div className="hidden lg:flex items-center gap-5 text-xs font-semibold text-slate-600 dark:text-slate-300">
               <Link href="/#features" className="hover:text-blue-600 transition">
                 Features
               </Link>
-              <Link href="/#sample-preview" className="hover:text-blue-600 transition">
-                Live Blueprint
-              </Link>
               <Link href="/#sync" className="hover:text-blue-600 transition">
                 Inquiry Sync
+              </Link>
+              <Link href="/services" className="hover:text-blue-600 transition">
+                Services
+              </Link>
+              <Link href="/about" className="hover:text-blue-600 transition">
+                About
+              </Link>
+              <Link href="/domains" className="hover:text-blue-600 transition">
+                Domains
+              </Link>
+              <Link href="/contact" className="hover:text-blue-600 transition">
+                Contact
               </Link>
             </div>
           </div>

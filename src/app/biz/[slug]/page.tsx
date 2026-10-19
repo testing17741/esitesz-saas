@@ -10,6 +10,7 @@ import {
 } from '@/lib/seo-aeo';
 import { BusinessInquiryForm } from '@/components/BusinessInquiryForm';
 import { StickyMobileBar } from '@/components/StickyMobileBar';
+import { StorefrontHeader } from '@/components/StorefrontHeader';
 import {
   Phone,
   MessageCircle,
@@ -154,56 +155,8 @@ export default async function BusinessPublicPage({ params }: PageProps) {
         <pre>{aeoDigest}</pre>
       </div>
 
-      {/* Agency Top Banner (Inspired by samplebyesitesz) */}
-      <div className="bg-slate-900 text-white text-center py-2 px-4 text-xs font-medium flex items-center justify-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="opacity-80">Verified Local Business Listing</span>
-        <span>•</span>
-        <span className="text-blue-400 font-semibold">Powered by esitesz</span>
-      </div>
-
-      {/* Header / Nav Section */}
-      <header className="bg-white border-b border-slate-200 sticky top-16 z-30">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            {/* Logo or Stylized Name */}
-            <div className="flex items-center gap-3">
-              {business.logoUrl ? (
-                <img
-                  src={business.logoUrl}
-                  alt={`${business.name} logo`}
-                  className="h-12 w-auto max-w-[160px] object-contain rounded"
-                />
-              ) : (
-                <div className="h-12 px-4 rounded-xl border-2 border-blue-600 bg-blue-50/50 flex items-center justify-center">
-                  <span className="text-blue-700 font-extrabold text-sm uppercase tracking-wider">
-                    {business.name}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {/* Contact & CTA in Header */}
-            <div className="hidden sm:flex items-center gap-4">
-              <div className="text-right">
-                <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Call Directly</div>
-                <a
-                  href={`tel:${business.phone}`}
-                  className="text-base font-black text-slate-800 hover:text-blue-600 transition"
-                >
-                  {business.phone}
-                </a>
-              </div>
-              <a
-                href="#inquire"
-                className="h-10 px-5 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center hover:bg-blue-700 shadow-sm transition"
-              >
-                {business.ctaText || 'Get Quote'}
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* Multi-Page Navigation Header */}
+      <StorefrontHeader business={business} />
 
       {/* Hero Section */}
       <section className="py-12 md:py-20 relative overflow-hidden bg-gradient-to-b from-white to-slate-50">
