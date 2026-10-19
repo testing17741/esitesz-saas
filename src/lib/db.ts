@@ -1,6 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 
-// PrismaClient singleton pattern to avoid exhaustion in Next.js development HMR
+// Ensure fallback DATABASE_URL if not provided in environment
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = 'file:./dev.db';
+}
+
+// PrismaClient singleton pattern to avoid connection exhaustion in Next.js development HMR
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
