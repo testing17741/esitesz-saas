@@ -1,0 +1,170 @@
+// Prisma Schema for esitesz SaaS
+// Optimized for SQLite (portable zero-config) and seamlessly upgradable to PostgreSQL
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  phone     String?
+  role      String   @default("USER") // "USER" | "SUPER_ADMIN"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  businesses Business[]
+  sessions   Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model OtpVerification {
+  id        String   @id @default(cuid())
+  email     String
+  codeHash  String
+  expiresAt DateTime
+  consumed  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+model Business {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug            String   @unique
+  name            String
+  tagline         String?
+  headline        String?
+  description     String?
+  category        String   @default("General Business")
+  
+  // Contact & Social
+  phone           String
+  whatsapp        String
+  email           String?
+  website         String?
+  
+  // Media & Branding
+  logoUrl         String?
+  heroImageUrl    String?
+  themeColor      String   @default("#2563eb")
+  
+  // Status & Super Admin Moderation
+  // "sab approve rahega lekin mai reject bhi kar sakta hu"
+  // "APPROVED" | "PENDING" | "REJECTED" | "SUSPENDED"
+  status          String   @default("APPROVED")
+  rejectionReason String?
+  
+  // GEO & Address details
+  address         String
+  city            String
+  state           String
+  pincode         String
+  country         String   @default("India")
+  latitude        Float?
+  longitude       Float?
+  googleMapsUrl   String?
+  
+  // CTA & Automation
+  ctaText         String   @default("Send Inquiry")
+  whatsappMessage String   @default("Hi, I visited your website and would like more details.")
+  openingHours    String?  @default("Mon - Sat: 9:00 AM - 8:00 PM")
+  
+  // Social Links
+  facebookUrl     String?
+  instagramUrl    String?
+  linkedinUrl     String?
+  twitterUrl      String?
+  youtubeUrl      String?
+
+  // SEO & AEO Settings
+  metaTitle       String?
+  metaDescription String?
+  keywords        String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  services        BusinessService[]
+  testimonials    BusinessTestimonial[]
+  faqs            BusinessFaq[]
+  leads           BusinessLead[]
+
+  @@index([slug])
+  @@index([userId])
+  @@index([status])
+  @@index([city])
+}
+
+model BusinessService {
+  id          String   @id @default(cuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  price       String?
+  badge       String?
+  icon        String?
+  imageUrl    String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([businessId])
+}
+
+model BusinessTestimonial {
+  id             String   @id @default(cuid())
+  businessId     String
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customerName   String
+  rating         Int      @default(5)
+  comment        String
+  locationOrRole String?
+  createdAt      DateTime @default(now())
+
+  @@index([businessId])
+}
+
+model BusinessFaq {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  question   String
+  answer     String
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([businessId])
+}
+
+model BusinessLead {
+  id          String   @id @default(cuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name        String
+  phone       String
+  email       String?
+  requirement String
+  status      String   @default("NEW") // "NEW" | "CONTACTED" | "CONVERTED" | "DISMISSED"
+  source      String   @default("web_inquiry")
+  createdAt   DateTime @default(now())
+
+  @@index([businessId])
+  @@index([createdAt])
+}
