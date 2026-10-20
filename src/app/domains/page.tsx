@@ -265,12 +265,22 @@ export default function DomainsPage() {
             <p className="text-slate-600 leading-relaxed text-[11px]">
               Our engineers assist with DNS records setup directly over WhatsApp or email at zero additional cost.
             </p>
-            <a
-              href="mailto:support@esitesz.com"
-              className="inline-block font-bold text-blue-700 underline text-xs pt-1"
-            >
-              support@esitesz.com
-            </a>
+            <div className="pt-1 flex flex-col gap-1 text-xs">
+              <a
+                href="https://wa.me/919152667967?text=Hi%20Zainuddin,%20I%20need%20help%20connecting%20a%20custom%20domain%20on%20esitesz."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-emerald-700 hover:text-emerald-800"
+              >
+                WhatsApp: +91 91526 67967 ↗
+              </a>
+              <a
+                href="mailto:testing17741+esitesz@gmail.com"
+                className="font-bold text-blue-700 underline text-xs"
+              >
+                testing17741+esitesz@gmail.com
+              </a>
+            </div>
           </div>
         </div>
       </div>

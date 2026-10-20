@@ -71,7 +71,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="mailto:support@esitesz.com" className="hover:text-white transition">
+                <a href="mailto:testing17741+esitesz@gmail.com" className="hover:text-white transition">
                   Grievance Redressal
                 </a>
               </li>
