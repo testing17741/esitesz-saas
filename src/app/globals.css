@@ -81,3 +81,11 @@ body {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
+
+.instruction-arrow {
+  color: #ef4444;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Caveat', cursive, sans-serif;
+  font-weight: 700;
+  z-index: 20;
+  pointer-events: none;
+}
