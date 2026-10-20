@@ -33,7 +33,7 @@ try {
 }
 
 // 4. Seed sample showcase and super admin
-console.log('[esitesz build] 3/4: Seeding demo showcase & admin...');
+console.log('[esitesz build] 3/4: Initializing starter blueprint & admin...');
 try {
   execSync('node scripts/seed.mjs', { stdio: 'inherit', env: process.env });
 } catch (e) {

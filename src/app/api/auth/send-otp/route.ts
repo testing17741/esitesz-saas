@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { sendOtpSchema } from '@/lib/validations';
 import { createAndSaveOtp } from '@/lib/auth';
+import { sendOtpEmail } from '@/lib/mailer';
 import { successResponse, errorResponse } from '@/lib/api-response';
 import { logger } from '@/lib/logger';
 
@@ -16,20 +17,25 @@ export async function POST(req: NextRequest) {
     const { email } = parseResult.data;
     const otp = await createAndSaveOtp(email);
 
-    logger.info('OTP request processed', { email });
+    logger.info('Dispatching OTP to recipient email', { email });
 
-    const hasSmtp = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER);
+    // Send real transactional email to user inbox
+    const emailResult = await sendOtpEmail({ to: email, code: otp });
+
+    if (!emailResult.success) {
+      logger.error('Failed to deliver OTP email', { email, error: emailResult.error });
+      return errorResponse(
+        emailResult.error || 'Unable to deliver verification code to your email. Please try again or check your email address.',
+        500
+      );
+    }
 
     return successResponse({
-      message: hasSmtp
-        ? 'Verification code dispatched to your email address.'
-        : 'Verification code generated successfully. Enter the code shown below to sign in.',
+      message: 'Verification code sent to your email address. Please check your inbox and spam folder.',
       email,
-      // Provide devOtp if SMTP is not configured so user is never locked out on preview/demo deployments
-      devOtp: !hasSmtp ? otp : undefined,
     });
   } catch (error) {
-    logger.error('Error in send-otp route', { error: String(error) });
+    logger.error('Unhandled error in send-otp route', { error: String(error) });
     return errorResponse('Failed to send verification code. Please try again.', 500);
   }
 }

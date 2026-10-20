@@ -58,8 +58,6 @@ export async function createAndSaveOtp(email: string): Promise<string> {
   }
 
   logger.info('OTP generated for email', { email: normalizedEmail });
-  console.log(`[ESITESZ AUTH] OTP for ${normalizedEmail} is: ${code}`);
-
   return code;
 }
 

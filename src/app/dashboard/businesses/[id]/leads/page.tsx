@@ -134,7 +134,7 @@ export default function BusinessLeadsPage({ params }: { params: { id: string } }
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="space-y-1">
             <span className="text-[10px] font-mono tracking-wider uppercase text-green-400 font-bold">
-              ● Automated Inquiry System (As demonstrated in samplebyesitesz)
+              ● Automated Real-time Inquiry Sync Engine
             </span>
             <h2 className="text-sm font-bold">From Your Website Directly To Your Leads Sheet</h2>
             <p className="text-xs text-slate-400 max-w-xl">
