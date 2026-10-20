@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth';
 import {
@@ -19,7 +20,9 @@ export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
-  if (!user) return null;
+  if (!user) {
+    redirect('/auth/login');
+  }
 
   const isSuperAdmin = user.role === 'SUPER_ADMIN';
 

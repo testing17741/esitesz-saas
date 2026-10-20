@@ -1,20 +1,17 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
+import { DeviceBlueprintShowcase } from '@/components/DeviceBlueprintShowcase';
 import {
   Sparkles,
   ArrowRight,
   ShieldCheck,
   FileSpreadsheet,
   MapPin,
-  Phone,
-  MessageCircle,
   ExternalLink,
   Zap,
   Globe,
   CheckCircle2,
-  Smartphone,
   Building2,
-  Clock,
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -111,129 +108,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Blueprint Reference Showcase (Inspired by samplebyesitesz.esitesz.com) */}
-      <section id="blueprint" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white border-2 border-slate-300 rounded-3xl shadow-xl overflow-hidden">
-          {/* Top Window Bar */}
-          <div className="bg-slate-900 text-white px-4 py-2.5 text-xs font-mono flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-red-500 inline-block" />
-              <span className="w-3 h-3 rounded-full bg-yellow-500 inline-block" />
-              <span className="w-3 h-3 rounded-full bg-green-500 inline-block" />
-              <span className="ml-2 opacity-80 text-[11px]">samplebyesitesz.esitesz.com — Storefront Blueprint</span>
-            </div>
-            <Link
-              href="/biz/samplebyesitesz"
-              className="text-emerald-400 hover:text-emerald-300 font-bold uppercase text-[10px] flex items-center gap-1"
-            >
-              Open Live Storefront <ExternalLink className="w-3 h-3" />
-            </Link>
-          </div>
-
-          <div className="p-6 md:p-10 space-y-8 bg-slate-50/50">
-            {/* Storefront Header Row */}
-            <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-36 placeholder-box rounded-lg flex items-center justify-center">
-                  <span className="text-blue-600 font-bold text-xs border border-blue-500 border-dashed px-2 py-0.5 rounded">
-                    YOUR LOGO
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="text-right">
-                  <span className="text-[10px] text-slate-400 uppercase font-bold block">Direct Call</span>
-                  <span className="text-xs font-mono font-bold bg-amber-100 px-2 py-0.5 rounded text-slate-800">
-                    +91 98765 43210
-                  </span>
-                </div>
-                <div className="h-9 px-4 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">
-                  Send Inquiry
-                </div>
-              </div>
-            </div>
-
-            {/* Hero Banner Blueprint */}
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="space-y-4">
-                <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-2">
-                  <span className="text-[10px] uppercase font-mono font-bold text-blue-600 block">
-                    Verified Local Business
-                  </span>
-                  <h3 className="text-xl md:text-2xl font-black text-slate-900 uppercase">
-                    YOUR BUSINESS <span className="text-blue-600">HEADLINE HERE</span>
-                  </h3>
-                  <p className="text-xs text-slate-500 leading-relaxed">
-                    Clear description about what your business offers, your experience, and why customers in your city trust your services.
-                  </p>
-                </div>
-
-                <div className="flex gap-3 pt-1">
-                  <div className="h-10 px-5 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-xs font-bold gap-2 shadow">
-                    <MessageCircle className="w-4 h-4" /> Instant WhatsApp
-                  </div>
-                  <div className="h-10 px-5 bg-slate-900 rounded-xl flex items-center justify-center text-white text-xs font-bold gap-2 shadow">
-                    <Phone className="w-4 h-4" /> Call Direct
-                  </div>
-                </div>
-              </div>
-
-              {/* Storefront Hero Photo Preview */}
-              <div className="relative h-56 md:h-64 bg-white border border-blue-200 rounded-2xl flex flex-col items-center justify-center text-center p-6 shadow-sm">
-                <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-2 border border-blue-200">
-                  <MapPin className="w-6 h-6" />
-                </div>
-                <p className="text-xs font-bold text-slate-900">Storefront Photo &amp; Location</p>
-                <p className="text-[11px] text-slate-500 mt-1 max-w-xs">
-                  Upload photos of your shop, products, or service team with your local address mapped.
-                </p>
-              </div>
-            </div>
-
-            {/* Services Offerings Grid */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                  Featured Offerings &amp; Catalog
-                </span>
-                <span className="text-[11px] text-blue-600 font-semibold">Customizable in Dashboard</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[
-                  { title: 'Core Primary Service', price: '₹999 onwards', badge: 'Most Popular' },
-                  { title: 'Express Consultation', price: 'Free Quote', badge: 'Quick Response' },
-                  { title: 'Comprehensive Setup', price: 'Custom Pricing', badge: 'Complete Package' },
-                ].map((item, idx) => (
-                  <div key={idx} className="p-4 border border-slate-200 rounded-xl bg-white space-y-2 shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                        {item.badge}
-                      </span>
-                      <span className="text-xs font-mono font-bold text-emerald-700">{item.price}</span>
-                    </div>
-                    <h4 className="text-sm font-bold text-slate-900">{item.title}</h4>
-                    <p className="text-[11px] text-slate-500">
-                      Delivered with guaranteed customer satisfaction and fast turnaround.
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile Viewport Sticky Bar Highlight */}
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center space-y-1">
-              <div className="flex items-center justify-center gap-2 text-xs font-bold text-blue-900">
-                <Smartphone className="w-4 h-4 text-blue-700" />
-                <span>Docked Mobile Action Bar Included</span>
-              </div>
-              <p className="text-[11px] text-blue-700">
-                On smartphones, docked WhatsApp and Call buttons remain permanently accessible at the bottom of customer screens.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Interactive Device Viewport Showcase (Laptop, Tablet, Mobile) */}
+      <DeviceBlueprintShowcase />
 
       {/* Core Platform Capabilities */}
       <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">

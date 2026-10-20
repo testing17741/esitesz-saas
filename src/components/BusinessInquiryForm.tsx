@@ -103,7 +103,7 @@ export function BusinessInquiryForm({ businessId, businessName, ctaText = 'Send 
             <input
               type="tel"
               required
-              placeholder="e.g. +91 98765 43210"
+              placeholder="e.g. +91 98200 12345"
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white"

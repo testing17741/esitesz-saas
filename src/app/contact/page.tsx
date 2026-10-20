@@ -59,7 +59,7 @@ export default function ContactPage() {
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="block font-semibold text-white">WhatsApp &amp; Phone</span>
-                  <span className="text-slate-400">+91 98765 43210</span>
+                  <span className="text-slate-400">+91 91520 00000</span>
                 </div>
               </div>
 
@@ -130,7 +130,7 @@ export default function ContactPage() {
                   <input
                     type="tel"
                     required
-                    placeholder="+91 98765 43210"
+                    placeholder="+91 98200 12345"
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
                     className="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white"

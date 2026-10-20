@@ -187,7 +187,14 @@ export function setAuthCookie(token: string) {
 // Clear auth cookie
 export function clearAuthCookie() {
   const cookieStore = cookies();
-  cookieStore.delete(AUTH_COOKIE_NAME);
+  cookieStore.set(AUTH_COOKIE_NAME, '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 0,
+    expires: new Date(0),
+  });
 }
 
 // Get the authenticated user from cookies
