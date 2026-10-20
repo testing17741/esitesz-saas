@@ -26,8 +26,8 @@ export function Footer() {
 
           {/* Platform Links */}
           <div className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Platform Pages</h4>
-            <ul className="text-xs space-y-1.5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">Platform Pages</h4>
+            <ul className="text-xs space-y-1.5 text-slate-300">
               <li>
                 <Link href="/about" className="hover:text-white transition">
                   About esitesz
@@ -58,8 +58,8 @@ export function Footer() {
 
           {/* Compliance & Legal */}
           <div className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Legal &amp; Compliance</h4>
-            <ul className="text-xs space-y-1.5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">Legal &amp; Compliance</h4>
+            <ul className="text-xs space-y-1.5 text-slate-300">
               <li>
                 <Link href="/privacy" className="hover:text-white transition">
                   Privacy Policy (DPDP 2023)

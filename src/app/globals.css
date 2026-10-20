@@ -66,6 +66,45 @@ body {
   background-color: #dbeafe;
 }
 
+/* Explicit background overrides must be respected */
+.placeholder-box.bg-transparent,
+.placeholder-box-transparent {
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+.placeholder-box.bg-slate-100 {
+  background-image: none !important;
+  background-color: #f1f5f9 !important;
+}
+
+.placeholder-box.bg-green-50 {
+  background-image: none !important;
+  background-color: #f0fdf4 !important;
+}
+
+.placeholder-box.bg-blue-50 {
+  background-image: none !important;
+  background-color: #eff6ff !important;
+}
+
+/* Dark Footer placeholder boxes: Must remain dark slate with slate border so white and light text is 100% visible */
+footer .placeholder-box,
+.placeholder-box.bg-slate-700\/50,
+.placeholder-box.footer-box {
+  background-image: none !important;
+  background-color: rgba(51, 65, 85, 0.65) !important;
+  border: 1px dashed #64748b !important;
+  color: #ffffff !important;
+}
+
+footer .placeholder-box:hover,
+.placeholder-box.bg-slate-700\/50:hover,
+.placeholder-box.footer-box:hover {
+  background-color: rgba(51, 65, 85, 0.9) !important;
+  border-color: #94a3b8 !important;
+}
+
 .label-tag {
   position: absolute;
   top: -12px;

@@ -53,9 +53,9 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="space-y-20 pb-20 overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative pt-12 md:pt-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center space-y-6">
+    <div className="space-y-12 pb-16 overflow-hidden">
+      {/* Sleek Top SaaS Bar */}
+      <section className="pt-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center space-y-4">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm">
           <Sparkles className="w-3.5 h-3.5 text-blue-600" />
           <span>Local Business Engine &amp; Automated Inquiry System</span>
@@ -63,52 +63,37 @@ export default async function HomePage() {
           <span className="font-bold text-slate-900">Developed by esitesz</span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
           Turn Local Customers Into <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-teal-600">
             Real WhatsApp Leads &amp; Google Sheet Data
           </span>
         </h1>
 
-        <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-600 leading-relaxed">
-          Create your verified business storefront in 60 seconds. Every customer inquiry submitted on your page
-          automatically syncs directly into your personal Google Sheet and delivers to your phone in real time.
+        <p className="max-w-2xl mx-auto text-xs sm:text-sm text-slate-600 leading-relaxed">
+          Create your verified business storefront. Inquiries submitted by customers automatically sync directly into your personal Google Sheet in real time.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3">
+        <div className="flex items-center justify-center gap-3 pt-1">
           <Link
             href="/auth/login"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md hover:shadow-lg transition active:scale-95"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition active:scale-95"
           >
             Create Your Storefront (Free)
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
-          <a
-            href="#blueprint"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm border border-slate-300 shadow-sm transition"
+          <Link
+            href="/biz/samplebyesitesz"
+            target="_blank"
+            className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs border border-slate-300 shadow-sm transition"
           >
-            <Building2 className="w-4 h-4 text-blue-600" />
-            Explore Storefront Architecture
-          </a>
-        </div>
-
-        <div className="pt-6 flex items-center justify-center gap-6 text-xs text-slate-500 flex-wrap">
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" /> 1-Click WhatsApp Inquiries
-          </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Realtime Google Sheets Sync
-          </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Google Maps &amp; AEO Schema
-          </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Super Admin Quality Moderation
-          </span>
+            <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
+            Live Storefront
+          </Link>
         </div>
       </section>
 
-      {/* Interactive Architecture Blueprint (Matching samplebyesitesz.esitesz.com) */}
+      {/* Main Interactive Architecture Blueprint (Exact samplebyesitesz.esitesz.com UI with Device Preview) */}
       <InteractiveBlueprint />
 
       {/* Core Platform Capabilities */}

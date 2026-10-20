@@ -478,62 +478,61 @@ export function InteractiveBlueprint() {
               </div>
             </section>
 
-            {/* Footer Blueprint */}
-            <footer className="bg-slate-800 text-white py-10 px-4 sm:px-6 border-t-4 border-blueprint-500">
+            {/* Footer Blueprint (Matching samplebyesitesz 1:1) */}
+            <footer className="bg-slate-800 text-white py-12 px-4 sm:px-6 lg:px-8 border-t-4 border-blueprint-500">
               <div
-                className={`max-w-5xl mx-auto grid gap-6 text-xs ${
+                className={`max-w-5xl mx-auto grid gap-8 ${
                   device === 'mobile' ? 'grid-cols-1' : 'md:grid-cols-3'
                 }`}
               >
                 {/* Column 1 */}
-                <div className="placeholder-box border-slate-600 bg-slate-700/50 p-4 rounded-lg space-y-2">
-                  <span className="text-xs text-blueprint-300 font-bold uppercase mb-1 block">
+                <div className="placeholder-box footer-box border-slate-600 bg-slate-700/50 p-4 rounded-lg">
+                  <span className="text-xs text-blueprint-300 font-bold uppercase mb-2 block">
                     Column 1
                   </span>
-                  <p className="font-bold text-base mb-1 text-white">[Your Company Name]</p>
-                  <p className="text-xs text-slate-400 leading-relaxed">
+                  <p className="font-bold text-lg mb-2 text-white">[Your Company Name]</p>
+                  <p className="text-sm text-slate-400">
                     A short footer description about your business trust and values.
                   </p>
                 </div>
 
                 {/* Column 2 */}
-                <div className="placeholder-box border-slate-600 bg-slate-700/50 p-4 rounded-lg space-y-2">
-                  <span className="text-xs text-blueprint-300 font-bold uppercase mb-1 block">
+                <div className="placeholder-box footer-box border-slate-600 bg-slate-700/50 p-4 rounded-lg">
+                  <span className="text-xs text-blueprint-300 font-bold uppercase mb-2 block">
                     Column 2
                   </span>
-                  <p className="font-bold mb-1 text-white">Contact Us</p>
-                  <div className="h-3.5 w-32 bg-slate-600 rounded" />
-                  <div className="h-3.5 w-44 bg-slate-600 rounded" />
-                  <div className="h-3.5 w-24 bg-slate-600 rounded" />
+                  <p className="font-bold text-base mb-2 text-white">Contact Us</p>
+                  <div className="h-4 w-32 bg-slate-600 rounded mb-2" />
+                  <div className="h-4 w-48 bg-slate-600 rounded mb-2" />
+                  <div className="h-4 w-24 bg-slate-600 rounded" />
                 </div>
 
                 {/* Column 3 */}
-                <div className="placeholder-box border-slate-600 bg-slate-700/50 p-4 rounded-lg space-y-2">
-                  <span className="text-xs text-blueprint-300 font-bold uppercase mb-1 block">
+                <div className="placeholder-box footer-box border-slate-600 bg-slate-700/50 p-4 rounded-lg">
+                  <span className="text-xs text-blueprint-300 font-bold uppercase mb-2 block">
                     Column 3
                   </span>
-                  <p className="font-bold mb-1 text-white">Find Us</p>
-                  <div className="aspect-video bg-slate-600 rounded flex items-center justify-center gap-1.5 text-slate-300">
-                    <MapPin className="w-4 h-4 text-blueprint-400" />
-                    <span className="text-xs">Google Map Integration</span>
+                  <p className="font-bold text-base mb-2 text-white">Find Us</p>
+                  <div className="aspect-video bg-slate-600 rounded flex items-center justify-center text-slate-300 text-xs">
+                    Google Map Integration
                   </div>
                 </div>
               </div>
             </footer>
 
-            {/* Sticky Mobile Placeholder Bar (Shown in Mobile View and on Real Mobile Viewports) */}
+            {/* Sticky Mobile Placeholder (Matching samplebyesitesz) */}
             <div
-              className={`bg-white border-t border-slate-200 p-2.5 z-20 ${
-                device === 'mobile' ? 'block' : 'block md:hidden'
+              className={`bg-white border-t border-slate-200 z-50 p-2 ${
+                device === 'mobile' ? 'block' : 'md:hidden'
               }`}
             >
               <div className="grid grid-cols-2 gap-2">
-                <div className="placeholder-box bg-green-50 border-green-300 h-11 rounded-lg flex items-center justify-center text-green-700 font-bold text-xs gap-1.5 shadow-sm">
-                  <MessageCircle className="w-4 h-4" />
+                <div className="placeholder-box bg-green-50 border-green-300 h-12 rounded flex items-center justify-center text-green-700 font-bold text-sm">
+                  <MessageCircle className="w-4 h-4 mr-2" />
                   <span>WhatsApp</span>
                 </div>
-                <div className="placeholder-box bg-blue-50 border-blue-300 h-11 rounded-lg flex items-center justify-center text-blueprint-600 font-bold text-xs gap-1.5 shadow-sm">
-                  <Phone className="w-4 h-4" />
+                <div className="placeholder-box bg-blue-50 border-blue-300 h-12 rounded flex items-center justify-center text-blue-700 font-bold text-sm">
+                  <Phone className="w-4 h-4 mr-2" />
                   <span>Call Now</span>
                 </div>
               </div>
