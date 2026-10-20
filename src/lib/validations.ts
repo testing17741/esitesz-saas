@@ -57,6 +57,14 @@ export const businessSchema = z.object({
   metaTitle: z.string().trim().max(70).optional().nullable(),
   metaDescription: z.string().trim().max(160).optional().nullable(),
   keywords: z.string().trim().max(300).optional().nullable(),
+
+  // Custom Domain & Subdomain
+  customDomain: z.string().trim().optional().nullable().or(z.literal('')),
+  subdomain: z.string().trim().optional().nullable().or(z.literal('')),
+  domainStatus: z.string().trim().optional().nullable().or(z.literal('')),
+  
+  // Google Sheet Webhook Sync
+  googleSheetUrl: z.string().trim().url('Must be a valid Webhook URL').optional().nullable().or(z.literal('')),
 });
 
 export const serviceSchema = z.object({

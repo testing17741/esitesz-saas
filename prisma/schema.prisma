@@ -59,6 +59,9 @@ model Business {
   subdomain       String?  @unique
   domainStatus    String   @default("UNCONNECTED") // "UNCONNECTED" | "PENDING" | "CONNECTED"
   
+  // Google Sheets Realtime Webhook Integration
+  googleSheetUrl  String?
+  
   // Contact & Social
   phone           String
   whatsapp        String

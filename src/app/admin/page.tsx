@@ -19,6 +19,9 @@ import {
   Globe,
   Server,
   ArrowLeft,
+  Edit,
+  Trash2,
+  PlusCircle,
 } from 'lucide-react';
 
 interface AdminBusiness {
@@ -71,6 +74,7 @@ export default function SuperAdminPortal() {
   const [domainRequests, setDomainRequests] = useState<DomainRequestItem[]>([]);
   const [counts, setCounts] = useState<AdminCounts | null>(null);
   const [loading, setLoading] = useState(true);
+  const [accessDenied, setAccessDenied] = useState(false);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [actingId, setActingId] = useState<string | null>(null);
@@ -81,15 +85,15 @@ export default function SuperAdminPortal() {
 
   const fetchAdminData = () => {
     setLoading(true);
+    setAccessDenied(false);
     const query = new URLSearchParams();
     if (statusFilter !== 'ALL') query.set('status', statusFilter);
     if (search.trim()) query.set('search', search.trim());
 
     fetch(`/api/admin/businesses?${query.toString()}`)
       .then((res) => {
-        if (res.status === 403) {
-          alert('Access denied. You are not logged in as a Super Admin.');
-          router.push('/dashboard');
+        if (res.status === 403 || res.status === 401) {
+          setAccessDenied(true);
           return null;
         }
         return res.json();
@@ -112,6 +116,20 @@ export default function SuperAdminPortal() {
         }
       })
       .catch(() => {});
+  };
+
+  const handleDeleteBusiness = async (id: string, name: string) => {
+    if (!confirm(`Super Admin Action: Permanently delete "${name}" and all its leads/data?`)) return;
+    try {
+      const res = await fetch(`/api/businesses/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setBusinesses((prev) => prev.filter((b) => b.id !== id));
+      } else {
+        alert('Failed to delete business profile');
+      }
+    } catch {
+      alert('Error deleting business profile');
+    }
   };
 
   useEffect(() => {
@@ -192,10 +210,17 @@ export default function SuperAdminPortal() {
 
             <div className="flex items-center gap-3">
               <Link
+                href="/dashboard/new"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition"
+              >
+                <PlusCircle className="w-3.5 h-3.5" />
+                New Storefront
+              </Link>
+              <Link
                 href="/dashboard"
                 className="px-3.5 py-2 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
               >
-                User Dashboard
+                Dashboard
               </Link>
               <button
                 onClick={fetchAdminData}
@@ -209,6 +234,25 @@ export default function SuperAdminPortal() {
         </div>
       </div>
 
+      {accessDenied ? (
+        <div className="max-w-md mx-auto my-16 bg-white border border-amber-200 rounded-2xl p-8 shadow-xl text-center space-y-4">
+          <div className="w-14 h-14 mx-auto rounded-full bg-amber-100 text-amber-800 flex items-center justify-center">
+            <ShieldCheck className="w-7 h-7" />
+          </div>
+          <h2 className="text-xl font-bold text-slate-900">Super Admin Authentication Required</h2>
+          <p className="text-xs text-slate-600 leading-relaxed">
+            This control center is reserved for Super Admins. Please log in with your authorized Super Admin email to manage all platform businesses and moderations.
+          </p>
+          <div className="pt-2">
+            <Link
+              href="/auth/login"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 shadow-md transition"
+            >
+              Log In as Super Admin
+            </Link>
+          </div>
+        </div>
+      ) : (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6">
         {/* Metric Cards */}
         {counts && (
@@ -404,6 +448,23 @@ export default function SuperAdminPortal() {
 
                             <td className="px-4 py-3.5 text-right whitespace-nowrap">
                               <div className="inline-flex items-center gap-1.5">
+                                {/* Direct CRUD Links */}
+                                <Link
+                                  href={`/dashboard/businesses/${biz.id}/edit`}
+                                  className="p-1.5 text-slate-500 hover:text-blue-600 rounded hover:bg-slate-100 transition"
+                                  title="Edit Business Profile & Google Sheet"
+                                >
+                                  <Edit className="w-3.5 h-3.5" />
+                                </Link>
+
+                                <Link
+                                  href={`/dashboard/businesses/${biz.id}/leads`}
+                                  className="p-1.5 text-slate-500 hover:text-emerald-600 rounded hover:bg-slate-100 transition"
+                                  title="View Leads & Inquiries"
+                                >
+                                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                                </Link>
+
                                 {!isApproved && (
                                   <button
                                     disabled={actingId === biz.id}
@@ -437,6 +498,15 @@ export default function SuperAdminPortal() {
                                     Suspend
                                   </button>
                                 )}
+
+                                <button
+                                  disabled={actingId === biz.id}
+                                  onClick={() => handleDeleteBusiness(biz.id, biz.name)}
+                                  className="p-1.5 text-slate-400 hover:text-red-600 rounded hover:bg-red-50 transition"
+                                  title="Permanently Delete Business"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
                               </div>
                             </td>
                           </tr>
@@ -520,6 +590,7 @@ export default function SuperAdminPortal() {
           </div>
         )}
       </div>
+      )}
 
       {/* Rejection Dialog Modal */}
       {rejectModalBiz && (

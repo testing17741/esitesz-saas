@@ -21,9 +21,12 @@ export default async function DashboardPage() {
   const user = await getCurrentUser();
   if (!user) return null;
 
+  const isSuperAdmin = user.role === 'SUPER_ADMIN';
+
   const businesses = await prisma.business.findMany({
-    where: { userId: user.id },
+    where: isSuperAdmin ? undefined : { userId: user.id },
     include: {
+      user: { select: { email: true } },
       _count: {
         select: {
           services: true,
@@ -37,6 +40,21 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      {/* Super Admin Access Banner */}
+      {isSuperAdmin && (
+        <div className="bg-amber-50 border border-amber-300 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+          <div className="flex items-center gap-2 text-amber-900 text-xs font-bold">
+            <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>Super Admin Full Access Active — Viewing all platform storefronts with full CRUD & moderation privileges.</span>
+          </div>
+          <Link
+            href="/admin"
+            className="px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-sm transition whitespace-nowrap"
+          >
+            Open Moderation Center
+          </Link>
+        </div>
+      )}
       {/* Overview Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">

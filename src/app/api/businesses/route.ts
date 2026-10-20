@@ -99,6 +99,9 @@ export async function POST(req: NextRequest) {
         metaTitle: data.metaTitle || `${data.name} | ${data.category} in ${data.city}`,
         metaDescription: data.metaDescription || `Official page for ${data.name}. Reliable ${data.category} in ${data.city}. Call ${data.phone} or send a quick inquiry.`,
         keywords: data.keywords || `${data.name}, ${data.category}, ${data.city}, services in ${data.city}`,
+        customDomain: data.customDomain || null,
+        subdomain: data.subdomain || null,
+        googleSheetUrl: data.googleSheetUrl || null,
       },
     });
 

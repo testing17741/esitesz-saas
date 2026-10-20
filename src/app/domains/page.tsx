@@ -76,6 +76,15 @@ export default function DomainsPage() {
           Brand your business with a custom domain (e.g. <code className="text-blue-700 bg-slate-100 px-1 py-0.5 rounded">yourbusiness.in</code>)
           or claim a free branded subdomain (<code className="text-blue-700 bg-slate-100 px-1 py-0.5 rounded">yourbrand.esitesz.com</code>).
         </p>
+
+        <div className="pt-2">
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold border border-slate-300 transition"
+          >
+            Business Owners: Manage Domains Directly Inside Dashboard &rarr;
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-8">

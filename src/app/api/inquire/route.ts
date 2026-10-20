@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     // Verify business exists and is active/approved
     const business = await prisma.business.findUnique({
       where: { id: businessId },
-      select: { id: true, name: true, status: true, whatsapp: true, email: true },
+      select: { id: true, name: true, status: true, whatsapp: true, email: true, googleSheetUrl: true },
     });
 
     if (!business) {
@@ -41,6 +41,31 @@ export async function POST(req: NextRequest) {
         source: 'landing_page_inquiry',
       },
     });
+
+    // Real-time dispatch to connected Google Sheets Webhook (if configured by business owner)
+    if (business.googleSheetUrl) {
+      try {
+        await fetch(business.googleSheetUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            date: new Date().toLocaleDateString('en-IN'),
+            time: new Date().toLocaleTimeString('en-IN'),
+            businessName: business.name,
+            name,
+            phone,
+            email: email || 'N/A',
+            requirement,
+            leadId: lead.id,
+            source: 'esitesz_storefront',
+          }),
+        });
+        logger.info('Lead dispatched to connected Google Sheet webhook', { businessId: business.id });
+      } catch (sheetErr) {
+        logger.warn('Failed to dispatch lead to Google Sheet webhook', { error: String(sheetErr) });
+      }
+    }
 
     logger.info('New customer lead received', {
       businessId: business.id,

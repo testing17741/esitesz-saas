@@ -124,6 +124,9 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
         metaTitle: data.metaTitle || null,
         metaDescription: data.metaDescription || null,
         keywords: data.keywords || null,
+        customDomain: data.customDomain || null,
+        subdomain: data.subdomain || null,
+        googleSheetUrl: data.googleSheetUrl || null,
       },
     });
 

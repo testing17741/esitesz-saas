@@ -64,20 +64,21 @@ export function Navbar() {
               <Link href="/#features" className="hover:text-blue-600 transition">
                 Features
               </Link>
-              <Link href="/#sync" className="hover:text-blue-600 transition">
-                Inquiry Sync
-              </Link>
               <Link href="/services" className="hover:text-blue-600 transition">
                 Services
               </Link>
               <Link href="/about" className="hover:text-blue-600 transition">
                 About
               </Link>
-              <Link href="/domains" className="hover:text-blue-600 transition">
-                Domains
-              </Link>
               <Link href="/contact" className="hover:text-blue-600 transition">
                 Contact
+              </Link>
+              <Link
+                href="/admin"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition font-bold"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
+                Super Admin
               </Link>
             </div>
           </div>
@@ -86,16 +87,6 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             {!loading && user ? (
               <>
-                {user.role === 'SUPER_ADMIN' && (
-                  <Link
-                    href="/admin"
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md bg-amber-100 text-amber-900 hover:bg-amber-200 border border-amber-300 transition"
-                  >
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    Super Admin
-                  </Link>
-                )}
-
                 <Link
                   href="/dashboard/new"
                   className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition"
@@ -122,6 +113,13 @@ export function Navbar() {
               </>
             ) : !loading ? (
               <>
+                <Link
+                  href="/admin"
+                  className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold rounded-md bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 transition"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
+                  Super Admin
+                </Link>
                 <Link
                   href="/auth/login"
                   className="px-3.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:text-blue-600 transition"

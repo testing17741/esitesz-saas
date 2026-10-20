@@ -67,6 +67,10 @@ interface BusinessData {
   metaTitle: string | null;
   metaDescription: string | null;
   keywords: string | null;
+  customDomain: string | null;
+  subdomain: string | null;
+  domainStatus: string | null;
+  googleSheetUrl: string | null;
   services: ServiceItem[];
   faqs: FaqItem[];
 }
@@ -74,10 +78,14 @@ interface BusinessData {
 export default function EditBusinessPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [business, setBusiness] = useState<BusinessData | null>(null);
-  const [activeTab, setActiveTab] = useState<'details' | 'services' | 'faqs' | 'seo'>('details');
+  const [activeTab, setActiveTab] = useState<'details' | 'services' | 'faqs' | 'seo' | 'sheet' | 'domain'>('details');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const [testingSheet, setTestingSheet] = useState(false);
+  const [testSheetMsg, setTestSheetMsg] = useState<string | null>(null);
+  const [copiedScript, setCopiedScript] = useState(false);
 
   // New Service State
   const [newService, setNewService] = useState({ title: '', price: '', badge: '', description: '' });
@@ -217,6 +225,48 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
     } catch {
       alert('Failed to delete business profile');
     }
+  };
+
+  const handleTestSheet = async () => {
+    if (!business?.googleSheetUrl) {
+      setTestSheetMsg('Please enter and save your Google Sheet Webhook URL below first.');
+      return;
+    }
+    setTestingSheet(true);
+    setTestSheetMsg(null);
+    try {
+      const res = await fetch(`/api/businesses/${params.id}/test-sheet`, { method: 'POST' });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setTestSheetMsg(data.data.message || 'Test row successfully sent!');
+      } else {
+        setTestSheetMsg(data.error || 'Failed to dispatch test row. Verify your Web App URL.');
+      }
+    } catch {
+      setTestSheetMsg('Network error testing sheet connection.');
+    } finally {
+      setTestingSheet(false);
+    }
+  };
+
+  const copyAppsScript = () => {
+    const code = `function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    new Date(),
+    data.businessName || '',
+    data.name || '',
+    data.phone || '',
+    data.email || '',
+    data.requirement || ''
+  ]);
+  return ContentService.createTextOutput(JSON.stringify({ status: "success" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
+    navigator.clipboard.writeText(code);
+    setCopiedScript(true);
+    setTimeout(() => setCopiedScript(false), 3000);
   };
 
   if (loading) {
@@ -361,6 +411,26 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
           }`}
         >
           <Sparkles className="w-3.5 h-3.5" /> SEO & GEO Settings
+        </button>
+        <button
+          onClick={() => setActiveTab('sheet')}
+          className={`px-4 py-2.5 text-xs font-bold border-b-2 transition whitespace-nowrap flex items-center gap-1.5 ${
+            activeTab === 'sheet'
+              ? 'border-blue-600 text-blue-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <FileSpreadsheet className="w-3.5 h-3.5" /> Google Sheets Sync
+        </button>
+        <button
+          onClick={() => setActiveTab('domain')}
+          className={`px-4 py-2.5 text-xs font-bold border-b-2 transition whitespace-nowrap flex items-center gap-1.5 ${
+            activeTab === 'domain'
+              ? 'border-blue-600 text-blue-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Globe className="w-3.5 h-3.5" /> Domain & Subdomain
         </button>
       </div>
 
@@ -781,6 +851,203 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
           </div>
         </form>
       )}
+
+      {/* TAB 5: GOOGLE SHEETS WEBHOOK SYNC */}
+      {activeTab === 'sheet' && (
+        <div className="bg-white border border-slate-200 rounded-b-xl p-6 sm:p-8 space-y-6">
+          <div className="space-y-1">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+              Automated Google Sheets Webhook Sync
+            </h3>
+            <p className="text-xs text-slate-500">
+              Every customer inquiry submitted on your public storefront will be instantly appended as a new row in your personal Google Sheet in real time.
+            </p>
+          </div>
+
+          {/* Test connection alert message if any */}
+          {testSheetMsg && (
+            <div className="p-3 bg-blue-50 border border-blue-200 text-blue-900 text-xs rounded-lg flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
+              <span>{testSheetMsg}</span>
+            </div>
+          )}
+
+          {/* Input field */}
+          <form onSubmit={handleSaveMain} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-700">
+                Google Sheets Webhook URL (Google Apps Script Web App)
+              </label>
+              <input
+                type="url"
+                placeholder="https://script.google.com/macros/s/AKfycbx.../exec"
+                value={business.googleSheetUrl || ''}
+                onChange={(e) => setBusiness({ ...business, googleSheetUrl: e.target.value })}
+                className="w-full px-3.5 py-2.5 text-xs font-mono rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white text-slate-900"
+              />
+              <p className="text-[11px] text-slate-500">
+                Supports Google Apps Script, Make.com, or Zapier webhooks.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="submit"
+                disabled={saving}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white font-semibold text-xs hover:bg-blue-700 shadow-sm transition disabled:opacity-50"
+              >
+                <Save className="w-4 h-4" />
+                {saving ? 'Saving...' : 'Save Google Sheet Webhook'}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleTestSheet}
+                disabled={testingSheet || !business.googleSheetUrl}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-300 font-semibold text-xs hover:bg-emerald-100 shadow-sm transition disabled:opacity-50"
+              >
+                <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                {testingSheet ? 'Testing Connection...' : 'Send Test Row to Sheet'}
+              </button>
+            </div>
+          </form>
+
+          {/* Step-by-Step Instructions */}
+          <div className="mt-6 border-t border-slate-200 pt-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                How to connect your Google Sheet in 60 seconds (100% Free Forever)
+              </h4>
+              <button
+                type="button"
+                onClick={copyAppsScript}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition"
+              >
+                {copiedScript ? 'Copied to Clipboard!' : 'Copy Apps Script Code'}
+              </button>
+            </div>
+
+            <ol className="list-decimal pl-4 space-y-2 text-xs text-slate-600">
+              <li>
+                Open a new Google Sheet at{' '}
+                <a href="https://sheets.new" target="_blank" rel="noreferrer" className="text-blue-600 underline">
+                  sheets.new
+                </a>.
+              </li>
+              <li>
+                In the top menu, go to <strong>Extensions &gt; Apps Script</strong>.
+              </li>
+              <li>Delete any code in the editor, click the button above to copy the script, and paste it.</li>
+              <li>
+                Click <strong>Deploy &gt; New deployment</strong>, select <strong>Web app</strong>, set <em>Who has access</em> to <strong>Anyone</strong>, and click <strong>Deploy</strong>.
+              </li>
+              <li>
+                Copy the generated <strong>Web app URL</strong>, paste it into the field above, and click <strong>Save</strong>.
+              </li>
+            </ol>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 6: CUSTOM DOMAIN & SUBDOMAIN */}
+      {activeTab === 'domain' && (
+        <form onSubmit={handleSaveMain} className="bg-white border border-slate-200 rounded-b-xl p-6 sm:p-8 space-y-6">
+          <div className="space-y-1">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <Globe className="w-4 h-4 text-blue-600" />
+              Custom Domain &amp; Subdomain Mapping
+            </h3>
+            <p className="text-xs text-slate-500">
+              Connect your own brand domain (e.g. <code>mybrand.in</code>) or reserve a free branded subdomain (e.g. <code>mybrand.esitesz.com</code>).
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-700">
+                Free Branded Subdomain
+              </label>
+              <div className="flex rounded-lg border border-slate-300 overflow-hidden focus-within:ring-2 focus-within:ring-blue-600">
+                <input
+                  type="text"
+                  placeholder="e.g. sharma"
+                  value={business.subdomain || ''}
+                  onChange={(e) => setBusiness({ ...business, subdomain: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') })}
+                  className="w-full px-3 py-2 text-xs focus:outline-none bg-white text-slate-900"
+                />
+                <span className="bg-slate-100 text-slate-500 text-xs px-3 py-2 font-mono border-l border-slate-300">
+                  .esitesz.com
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-700">
+                Custom Domain (e.g. .com, .in, .co)
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. sharmaelectricals.in"
+                value={business.customDomain || ''}
+                onChange={(e) => setBusiness({ ...business, customDomain: e.target.value.toLowerCase().trim() })}
+                className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white text-slate-900"
+              />
+            </div>
+          </div>
+
+          {/* DNS Configuration Helper */}
+          <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+              DNS Setup Instructions for Custom Domain
+            </h4>
+            <div className="space-y-2 text-xs text-slate-600">
+              <p>In your domain registrar (GoDaddy, Namecheap, Hostinger, Cloudflare), add these two DNS records:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-[11px]">
+                <div className="bg-white p-2.5 rounded border border-slate-200">
+                  <span className="font-bold block text-slate-800">CNAME Record</span>
+                  <span className="text-slate-500">Host: <code>www</code> &rarr; <code>cname.vercel-dns.com</code></span>
+                </div>
+                <div className="bg-white p-2.5 rounded border border-slate-200">
+                  <span className="font-bold block text-slate-800">A Record</span>
+                  <span className="text-slate-500">Host: <code>@</code> &rarr; <code>76.76.21.21</code></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-slate-200">
+            <button
+              type="submit"
+              disabled={saving}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 shadow-sm transition disabled:opacity-50"
+            >
+              <Save className="w-4 h-4" />
+              {saving ? 'Saving...' : 'Save Domain Settings'}
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* Danger Zone: Delete Business */}
+      <div className="bg-red-50 border border-red-200 rounded-xl p-5 space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h4 className="text-sm font-bold text-red-900">Delete Storefront</h4>
+            <p className="text-xs text-red-700">
+              Permanently delete this business storefront, its service catalog, FAQs, and all received customer inquiries.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={handleDeleteBusiness}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-sm transition shrink-0"
+          >
+            <Trash2 className="w-4 h-4" />
+            Delete Business Profile
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
