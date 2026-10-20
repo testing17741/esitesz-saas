@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
-import { DeviceBlueprintShowcase } from '@/components/DeviceBlueprintShowcase';
+import { InteractiveBlueprint } from '@/components/InteractiveBlueprint';
 import {
   Sparkles,
   ArrowRight,
@@ -108,8 +108,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Interactive Device Viewport Showcase (Laptop, Tablet, Mobile) */}
-      <DeviceBlueprintShowcase />
+      {/* Interactive Architecture Blueprint (Matching samplebyesitesz.esitesz.com) */}
+      <InteractiveBlueprint />
 
       {/* Core Platform Capabilities */}
       <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
