@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
+import { PlatformShell } from '@/components/PlatformShell';
 import { CookieBanner } from '@/components/CookieBanner';
 
 export const metadata: Metadata = {
@@ -10,6 +9,11 @@ export const metadata: Metadata = {
     'Turn your local business into a high-converting digital storefront with instant WhatsApp inquiries, Google Maps GEO optimization, and automated lead sheet sync. Developed by esitesz.',
   keywords: 'business landing page, local seo, aeo optimization, whatsapp leads, esitesz, business builder',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
   openGraph: {
     title: 'esitesz — Local Business Digital Engine',
     description: 'Create high-converting landing pages with instant lead capture and AEO/GEO optimization.',
@@ -32,9 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-900 selection:bg-blue-100 selection:text-blue-900">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <PlatformShell>{children}</PlatformShell>
         <CookieBanner />
       </body>
     </html>

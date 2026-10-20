@@ -38,6 +38,7 @@ async function main() {
     where: { slug: 'samplebyesitesz' },
     update: {
       status: 'APPROVED',
+      headline: 'YOUR MAIN HEADLINE HERE',
       phone: '+91 91526 67967',
       whatsapp: '+91 91526 67967',
       email: 'testing17741+esitesz@gmail.com',
@@ -50,7 +51,7 @@ async function main() {
       userId: adminUser.id,
       name: 'Esitesz Blueprint Solutions',
       slug: 'samplebyesitesz',
-      headline: 'YOUR FUTURE WEBSITE | ESITESZ',
+      headline: 'YOUR MAIN HEADLINE HERE',
       tagline: 'The Automated Inquiry System & Local Business Engine',
       description: 'Showcase business profile demonstrating instant WhatsApp leads, Google Maps integration, and real-time leads sheet synchronization.',
       category: 'Digital & Local Services',
